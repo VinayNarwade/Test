@@ -1,0 +1,105 @@
+import java.util.Scanner;
+
+public class Hello 
+{
+	String name, add, pno, eid, branch;
+	double tfees, adf, tf, of;
+	static String college, address, phoneno;
+	static 
+	{
+		college = "RVCE";
+		address = "kengeri, bengaluru";
+		phoneno = "1234567890";
+	}
+
+	Hello (String name2, String add, String pn2, String eid2, String branch2)
+	{
+		this.name = name2;
+		this.add = add;
+		this.pno = pn2;
+		this.eid = eid2;
+		this.branch = branch2;
+	}
+
+	Hello (String name2, String add, String branch2) 
+	{
+		this.name = name2;
+		this.add = add;
+		this.pno = pno;
+		this.eid = "" + name + "@rvce.edu.in";
+		this.branch = branch2;
+	}
+
+	public double fee(String branch2)
+	{
+		this.adf = 25000;
+		this.tf = 25000;
+		this.of = 10000;
+		tfees = adf + tf + of;
+		if (branch.equalsIgnoreCase("BE")) 
+			tfees += 30000;
+		else
+			tfees += 25000;
+		return tfees;
+	}
+
+	public void display()
+	{
+		System.out.println("Name: "+name+" \n Address: "+address+" \n phone no: "+phoneno+" emailid: "+eid+" branch:"+branch);
+	}
+
+	public void display(String branch)
+	{
+		double feecal = this.fee(branch);
+		System.out.println("Total fees for the branch: "+branch+" total fees:"+feecal);
+	}
+
+
+	public static void main(String args[])
+	{
+		Hello si;
+		Scanner sc = new Scanner(System.in);
+		while (true)
+		{
+			System.out.println("Enter the student details");
+			System.out.println("enter the name");
+			String name = sc.next();
+			System.out.println("enter the address");
+			String add = sc.next();
+			System.out.println("enter the branch");
+			String branch = sc.next();
+			System.out.println("would you like to enter emailid and phoneno");
+			int choice = sc.nextInt();
+			if (choice == 1)
+			{
+				System.out.println("enter the phoneno");
+				String phoneno = sc.next();
+				System.out.println("enter the emailid");
+				String emailid = sc.next();
+				si = new Hello(name, add, phoneno, emailid, branch);
+			}
+			else 
+				si = new Hello (name, add, branch);
+			while (true)
+			{
+			System.out.println("1. display all details");
+			System.out.println("2. display total branch fees");
+			choice = sc.nextInt();
+			if (choice == 1)
+				si.display();
+			else if (choice == 2) 
+			{
+				System.out.println("enter the branch");
+				branch = sc.next();
+				si.display(branch);
+			} 
+			else
+				break;
+			}
+			System.out.println("enter the choice 1. continue 2. exit");
+			choice = sc.nextInt();
+			if (choice == 2)
+				break;
+		}
+	}
+}
