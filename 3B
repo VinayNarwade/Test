@@ -1,0 +1,190 @@
+import java.sql.*;
+import java.util.Scanner;
+public class lab3a
+{
+    Connection con = null;
+    public Connection getConnect() throws SQLException, Exception
+    {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        con = DriverManager.getConnection("jdbc:mysql://172.16.34.105/1rv21mc116","1rv21mc116","1rv21mc116");
+        return con;
+    }
+    public int insert(String usn, String name, String address)
+    {
+        int i = 0;
+        try
+        {
+            con = getConnect();
+            String query = "insert into student values(?,?,?)";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1,usn);
+            ps.setString(2,name);
+            ps.setString(3,address);
+            i = ps.executeUpdate();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                con.close();
+            }
+            catch(SQLException e)
+            {
+                e.printStackTrace();
+            }
+            return i;
+        }
+    }
+    public void display(String usn)
+    {
+        try {
+            con = getConnect();
+            Statement st = con.createStatement();
+            ResultSet r = st.executeQuery("show tables");
+            String query = "select * from student where usn = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1,usn);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3));
+            }
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                con.close();
+            }
+            catch(SQLException e) 
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+    public int delete(String usn)
+    {
+        int i = 0;
+        try{
+            con = getConnect();
+            String query = "delete from student where usn = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1, usn);
+            i = ps.executeUpdate();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        finally 
+        {
+            try
+            {
+                con.close();
+            }
+            catch(SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return i;
+    }
+    public int update(String usn,String name)
+    {
+        int i = 0;
+        try{
+            con = getConnect();
+            {
+                String query = "update student set name = ? where usn = ?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setString(1,name);
+                ps.setString(2,usn);
+                i = ps.executeUpdate();
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        finally
+        {
+            try
+            {
+                con.close();
+            }
+            catch(SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return i;
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            lab3a obj = new lab3a();
+            int i = 0;
+            System.out.println("1:insert 2:update 3:delete 4:display");
+            int n = sc.nextInt();
+            if (n == 1)
+            {
+                String usn, name, address;
+                System.out.println("enter usn:");
+                usn = sc.next();
+                System.out.println("enter name:");
+                name = sc.next();
+                System.out.println("enter address");
+                address = sc.next();
+                i = obj.insert(usn, name, address);
+            }
+            else if (n == 2)
+            {
+                String usn;
+                System.out.println("enter usn:");
+                usn = sc.next();
+                System.out.println("enter name:");
+                String name = sc.next();
+                i = obj.update(usn, name);
+            }
+            else if (n == 3)
+            {
+                String usn;
+                System.out.println("enter usn:");
+                usn = sc.next();
+                i = obj.delete(usn);
+            }
+            else if (n == 4)
+            {
+                String usn;
+                System.out.println("enter usn:");
+                usn = sc.next();
+                obj.display(usn);
+                if (i == 1)
+                    System.out.println("success");
+                else if (n == 4)
+                {
+                    System.out.println(" ");
+                }
+                else
+                    System.out.println("failed");
+                System.out.println("do you want to continue? 1 for yes");
+                n = sc.nextInt();
+                if (n == 1)
+                    continue;
+                else
+                    break;
+            }
+        }
+    }
+}
