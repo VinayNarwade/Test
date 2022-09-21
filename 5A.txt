@@ -1,0 +1,45 @@
+INDEX.JSP
+
+<% @page import="java.util.*"%>
+<html>
+<head><title>JSP</title></head>
+<body>
+<% String n= request.getParameter("name");
+String n1= request.getParameter("password");
+Cookie c= new Cookie("name", n);
+Cookie c1= new Cookie("password", n1);
+c.setMaxAge(60*60*24*7);
+response.AddCookie(c);
+response.AddCookie(c1);
+%>
+<a href="display.jsp">Display</a>
+</body>
+</html>
+
+
+
+DISPLAY.JSP
+<html>
+<head></head>
+<body>
+<%
+Cookie[] c= request.getCookie();
+Cookie[] c1= request.getCookie();
+for(Cookie c1:c){%>
+<%=c1.getName();%>
+<%=c.getpassword();%>
+<%}%>
+</body>
+</html>
+
+
+HTML PAGE
+<html>
+<head><title>Test</title></head>
+<body>
+<form>
+<input type="text" name="username">
+<input type="text" name="password">
+</form>
+</body>
+</html>
