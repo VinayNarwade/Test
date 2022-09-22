@@ -1,45 +1,72 @@
-INDEX.JSP
+INDEX.jsp
 
-<% @page import="java.util.*"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import ="java.util.*"%>
+<!DOCTYPE html>
 <html>
-<head><title>JSP</title></head>
-<body>
-<% String n= request.getParameter("name");
-String n1= request.getParameter("password");
-Cookie c= new Cookie("name", n);
-Cookie c1= new Cookie("password", n1);
-c.setMaxAge(60*60*24*7);
-response.AddCookie(c);
-response.AddCookie(c1);
-%>
-<a href="display.jsp">Display</a>
-</body>
-</html>
-
-
-
-DISPLAY.JSP
-<html>
-<head></head>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
 <body>
 <%
-Cookie[] c= request.getCookie();
-Cookie[] c1= request.getCookie();
-for(Cookie c1:c){%>
-<%=c1.getName();%>
-<%=c.getpassword();%>
-<%}%>
+Date CreateTime=new Date(session.getCreationTime());
+Date LastTime=new Date(session.getLastAccessedTime());
+
+String user=request.getParameter("user");
+String pass=request.getParameter("pass");
+
+out.println("First_Name: "+user+"<br>");
+out.println("Last_Name: "+pass+"<br>");
+out.println("Session Id: "+session.getId()+"<br>");
+out.println("first Time: "+CreateTime+"<br>");
+out.println("Last Time: "+LastTime+"<br>");
+Cookie First_Name=new Cookie("First_Name",user);
+response.addCookie(First_Name);
+%>
+<a href="Display.jsp">new page</a>
 </body>
 </html>
 
 
-HTML PAGE
+
+DISPLAY.jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
-<head><title>Test</title></head>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
 <body>
-<form>
-<input type="text" name="username">
-<input type="text" name="password">
+<%
+Cookie[] c= null;
+c=request.getCookies();
+for(Cookie c1:c){
+	out.println("Cookie name"+c1.getName()+"<br>");
+	out.println("Cookie value"+c1.getValue()+"<br>");
+}
+%>
+</body>
+</html>
+
+
+
+
+
+TEST.html
+<!DOCTYPE html>
+<html>
+<head></head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<body>
+<form action="LAB_NEW" method="get">
+USERNAME<input type="text" name="USERNAME">
+PASSWORD<input  type="text" name="PASSWORD">
+SUBMIT<input  type="submit" value="submit">
 </form>
 </body>
 </html>
